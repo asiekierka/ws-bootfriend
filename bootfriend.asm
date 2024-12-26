@@ -127,8 +127,7 @@ bootfriend_hello:
 	and bl, 0x0F
 	inc bx ; inc bl, but inc bx is safe here as it will only affect bl
 	call loader_putc
-	xor ax, ax ; test always zero
-	mov cs:[vbl_noPCv2Strap + 1], al
+	cs mov byte [vbl_noPCv2Strap + 1], 0x00 ; test always zero
 
 bootfriend_loop:
 	hlt
@@ -201,8 +200,7 @@ vbl_jumpToInitDone:
 	or al, HWINT_SERIAL_RX
 	out IO_HWINT_ENABLE, al
 
-	mov al, 0xEB ; jump always
-	mov cs:[vbl_jumpToInitDone], al
+	cs mov byte [vbl_jumpToInitDone], 0xEB ; jump always
 
 vbl_initDone:
 	pop es
