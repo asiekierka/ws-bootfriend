@@ -418,9 +418,10 @@ serial_putc_ack:
 	mov al, ACK
 serial_putc_block:
 	push ax
+serial_putc_block_loop:
 	in al, IO_SERIAL_STATUS
 	test al, 0x04
-	jz serial_putc_block
+	jz serial_putc_block_loop
 	pop ax
 	out IO_SERIAL_DATA, al
 	ret
