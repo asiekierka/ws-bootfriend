@@ -102,7 +102,7 @@ times 0x40-($-$$) db 0x00 ; Padding
 %define CAN 24
 
 bootFriendVersion:
-	db 0x02
+	db 0x03
 
 vblankHandler:
 	pusha
@@ -152,8 +152,7 @@ bootfriend_check:
 	jz vbl_noPCv2Strap
 
 	; Switch to Mono mode
-	in al, 0x60
-	and al, 0x1F
+	mov al, 0x0A
 	out 0x60, al
 
 	; Jump to PCv2 bootstrap
