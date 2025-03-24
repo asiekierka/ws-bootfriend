@@ -41,7 +41,7 @@ extern void vblank_int_handler(void);
 
 // Must be 24 chars
 //                                      1234567890123456789012345678
-static const char IN_ROM bfi_title[] = "bootfriend-inst devel. bui06";
+static const char IN_ROM bfi_title[] = "bootfriend-inst devel. bui07";
 static const char IN_ROM bfi_eeprom_locked[] = "EEP locked";
 static const char IN_ROM bfi_eeprom_unlocked[] = "EEP unlocked";
 static const char IN_ROM bfi_no_splash[] = "no splash";
@@ -210,7 +210,7 @@ static void install_bootfriend(const uint8_t __far* data, uint16_t data_size) {
 		if (i == 4 && data[i] >= 0x10) continue;
 
 		// skip SwanCrystal data block
-		if (!(i >= 0x2C && i < 0x38)) {
+		if (!(i >= 0x2C && i < 0x36)) {
 			uint16_t w = *((const uint16_t __far*) (data + i));
 			uint16_t w2 = ws_eeprom_read_word(ieep_handle, i + 0x80);
 			if (w != w2) {
@@ -236,7 +236,7 @@ static void install_bootfriend(const uint8_t __far* data, uint16_t data_size) {
 		if (i == 4 && data[i] >= 0x10) continue;
 
 		// skip SwanCrystal data block
-		if (!(i >= 0x2C && i < 0x38)) {
+		if (!(i >= 0x2C && i < 0x36)) {
 			uint16_t w = *((const uint16_t __far*) (data + i));
 			uint16_t w2 = ws_eeprom_read_word(ieep_handle, i + 0x80);
 			if (w != w2) {
