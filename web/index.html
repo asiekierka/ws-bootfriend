@@ -6,7 +6,7 @@
 	<link rel="stylesheet" href="pure-min.css">
 	<title>BootFriend for WS</title>
 	<style type="text/css">
-		html, body { background-color: #fffefd; }
+		html, body { background-color: #f3f2f1; }
 		a, a:visited { color: #27c; text-decoration: none; }
 		a:hover { color: #6ae; text-decoration: none; }
 		li { margin-bottom: 0.25em; }
@@ -25,58 +25,20 @@
 	<div class="pure-u-1-1">
 		<h1>BootFriend for WS</h1>
 		<p style="padding-bottom: 0.6em; text-align: center;"><i>So you're a Friend who's good at booting homebrew? <a href="https://twitter.com/sasakure__UK/status/846922987991281665">Sugoi~!</a></i></p>
-		<p><b>BootFriend</b> is a custom &quot;firmware&quot; solution, in the form of a modified splash screen, compatible with the WonderSwan Color and SwanCrystal handheld consoles. It provides the following features:</p>
+		<p>BootFriend is a custom &quot;firmware&quot; solution compatible with the WonderSwan Color and SwanCrystal handheld consoles. It provides a custom splash screen with the following features:</p>
 		<ul>
-			<li>Custom startup splash screen - faster boot times, custom logo,</li>
-			<li>Launch cartridges in Pocket Challenge V2/&quot;pin-strapped&quot; mode - hold <b>Y1</b> on boot,</li>
-			<li>Load .bfb programs to RAM via serial port - akin to the GBA's &quot;Multiboot&quot; functionality:
-			<ul>
-				<li>Compile your own homebrew and run it (<a href="https://github.com/WonderfulToolchain/ws-bootfriend/blob/main/README.md">format specification</a>),</li>
-				<li>Backup games and saves, as well as dump the IPL (boot ROM) with <a href="#soft-ws-backup-tool">WS Backup Tool</a>,</li>
-				<li>Verify hardware functionality as an emulator/homebrew developer with <a href="#soft-wsmonitor">WSMonitor</a>.</li>
-			</ul>
-			</li>
-			<li>Verify BootFriend installation status and version - hold <b>Y3</b> on boot.</li>
+			<li>Customize the logo through a web editor (including setting a faster boot time),</li>
+			<li> Load .bfb programs to RAM via serial port - this is similar to the GBA's “Multiboot” functionality,</li>
+			<li>Launch Pocket Challenge V2 cartridges on WonderSwan consoles in “pin-strap mode”.</li>
+			<li>Use the installer to “unbrick” consoles with corrupted internal EEPROMs.</li>
 		</ul>
-		</p>
-		<p>In addition, the installation software can be used to fix certain console faults caused by internal EEPROM corruption:
-		<ul>
-			<li>Freezes/hangs on startup caused by invalid splash screen data,</li>
-			<li>Sidebar icons/&quot;segments&quot; not displaying on SwanCrystal units (missing TFT configuration data).</li>
-		</ul>
-		</p>
-		<p>The installation software can also be used to install other, non-BootFriend boot splashes.</p>
-		<p><b>If you're looking to back up the IPL of the &quot;mono&quot; WonderSwan, feel free to try <a href="https://github.com/up-n-atom/wwsoft/wiki/IPL-Dumper">up-n-atom's dumpipl</a>.</b></p>
+		<p><b>The installation guide and user documentation is available <a href="https://wiki.asie.pl/doku.php?id=project:homebrew:wsbootfriend">here</a>.</b></p>
 	</div>
 	<div class="pure-u-1-1">
 		<h2>Installation</h2>
 		<p>The installation software has been tested on multiple consoles and effort has been put in to validate its stability. However, as I am not in a position to guarantee its operation, I am obliged to inform you that:</p>
 		<p id="warranty-disclaimer">
 <b>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</b>
-		</p>
-		<p><b>Requirements:</b></p>
-		<ul>	
-			<li><b>WonderSwan Color</b> or <b>SwanCrystal</b> console (<i>not</i> compatible with &quot;mono&quot; WonderSwans),
-			<ul>
-				<li>Alternatively, one may use <b>ares v132</b> (or a recent nightly release) to test the installation procedure.</li>
-			</ul>
-			</li>
-			<li>Installation device (required only for installation). Some options include:
-			<ul>
-				<li>Cartridge capable of running WonderSwan ROM images,</li>
-				<li>Official WonderWitch or WonderWitch Player cartridge (experimental, untested),</li>
-				<li>Other options may be available in the future.</li>
-			</ul>
-			</li>
-			<li>Serial port adapter <i>(optional, but highly recommended - it's one of the firmware's main features)</i>. Some options include:
-			<ul>
-				<li><b><a href="https://github.com/WonderfulToolchain/ws-extfriend">ExtFriend for WS</a></b> - recommended cheap DIY solution, requires Pi Pico + some DIY work,</li>
-				<li>Official WonderWitch serial cable,</li>
-				<li><a href="https://www.retroonyx.com/product-page/wonderswan-usb-link-cable">RetroOnyx aftermarket serial cable</a> - ready-made solution, but costs an eye-watering $85.</li>
-			</ul>
-			</li>
-			<li>Installation files - please configure them below!</li>
-		</ul>
 		</p>
 		<p><b>Configuration:</b></p>
 	</div>
@@ -85,7 +47,7 @@
 			<div class="pure-u-2-3">
 				<h3 style="text-align: center;">Splash</h3>
 				<div class="pure-button-group" role="group" aria-label="Screen mode" style="margin: 0.5em 0; text-align: center;">
-					<button onclick="bfui_set_eeprom_type(0); return false;" class="pure-button pure-button-active" style="font-size: 75%;" id="input_eeprom_type_0">BootFriend v02 (2023-02-21)</button>
+					<button onclick="bfui_set_eeprom_type(0); return false;" class="pure-button pure-button-active" style="font-size: 75%;" id="input_eeprom_type_0">BootFriend v03 (2024-12-26)</button>
 					<button onclick="bfui_set_eeprom_type(1); return false;" class="pure-button" style="font-size: 75%;" id="input_eeprom_type_1">Custom Splash</button>
 				</div>
 				<div id="eeprom_type_0">
@@ -211,112 +173,25 @@
 				class="pure-button" style="width: 550px;">Download bootfriend-inst-wwsystem.bin (WonderWitch OS upgrade)</button>
 	</div>
 	<div class="pure-u-1-1" style="margin-bottom: 1.75em; text-align: center;">
-		<button onclick="bf_download('bootfriend.bin', bf_generate_image('raw')); return false;"
-				class="pure-button" style="width: 550px;">Download bootfriend.bin (raw splash data)</button>
-	</div>
-	<div class="pure-u-1-1">
-		<p><b>Installation:</b></p>
-		<ul>
-			<li>Select one of the options above, then follow the relevant installation guide below.</li>
-			<li><b>Different installation methods have separate guides. Please scroll down until the correct one is found.</b></li>
-			<li>The guide will often refer to &quot;XMODEM file transfer&quot;. This is a guide on how to perform an XMODEM file transfer:
-				<ul>
-					<li>On Windows, you may use <a href="https://osdn.net/projects/ttssh2/releases/">Tera Term</a> to initiate an XMODEM file transfer:
-					<ol>
-						<li>Setup -> Serial Port... -> select Port, Speed; set Data: 8 bit, Parity: none, Stop bits: 1 bit, Flow control: none.</li>
-						<li>File -> Transfer -> XMODEM -> Send...</li>
-					</ol>
-					</li>
-					<li>On Linux, you may use minicom in a terminal prompt to initiate an XMODEM file transfer:
-					<ol>
-						<li>Run &quot;minicom -D [device]&quot;; for ExtFriend, the device will typically be /dev/ttyACM0.</li>
-						<li>Press Ctrl+A, then O, then select &quot;Serial port setup&quot;:
-						<ul>
-							<li>Set &quot;Bps/Par/Bits&quot; to the correct speed, then press Q to set 8N1.</li>
-							<li>Set Hardware and Software Flow Control to &quot;No&quot;.</li>
-						</ul>
-						</li>
-						<li>Press Ctrl+A, then S, then select &quot;xmodem&quot;.</li>
-					</ol>
-					</li>
-					<li>Note that BootFriend uses a <b>38400 bps</b> serial port speed by default.</li>
-				</ul>
-			</li>
-		</ul>
-	</div>
-	<div class="pure-u-1-1">
-		<p><b>Installation Guide (Cartridge):</b></p>
-		<ol>
-			<li>Flash <b>bootfriend-inst.wsc</b> to the cartridge.
-			<ul>
-				<li>If your cartridge of choice uses a multiple choice menu, it is advisable to flash the installation program in place of said menu.</li>
-			</ul>
-			</li>
-			<li>Launch the cartridge. Examine the information on the status bar (top row).
-			<ul>
-				<li>If the status bar says <b>EEP locked</b>, BootFriend cannot be installed. Make sure you've flashed the installer correctly.</li>
-				<li>The <b>Test BootFriend</b> option allows you to test the program serial port loader without installing the splash screen. This is useful for ensuring that your serial port adapter will work with the firmware.
-				<ul>
-					<li><b>This does not display the configured custom splash!</b> This is <b>only</b> for testing the serial port loader.</li>
-				</ul>
-				</li>
-				<li>The <b>Disable/Enable custom splash</b> option allows you to disable a custom splash (to fix console freezes/hangs related to them) or enable one.
-				<ul>
-					<li>Note that, on SwanCrystal, there is a factory-installed custom splash screen on the IEEPROM, which is slightly different from the built-in one. The built-in splash screen is identical to the WonderSwan Color.</li>
-					<li>If BootFriend is installed, the option is named <b>Disable/Enable BootFriend</b> instead - as BootFriend is a modified custom splash, disabling the custom splash also disables BootFriend's functionality.</li>
-				</ul>
-				</li>
-				<li>The <b>SwanCrystal TFT recovery</b> option allows you to fix missing TFT configuration data, as explained above.</li>
-			</ul>
-			<li>Select <b>Install BootFriend</b> and follow the instructions.
-			<ul>
-				<li>The right-hand side of the status bar should now say <b>BF v.??</b> - this indicates a BootFriend installation.</li>
-			</ul>
-			</li>
-			<li>Once done, turn off the console. You can hold <b>Y3</b> on boot to check for a successful BootFriend installation.
-			<ul>
-				<li>Note that the <b>bootfriend-inst.wsc</b> cartridge disables custom splashes on boot! You'll need to flash different data, or use a different cartridge, to verify BootFriend's operation.</li>
-				<li>The WonderSwan Color and SwanCrystal will not turn on if no valid cartridge is present. This is a normal feature of the console.</li>
-			</ul>
-			</li>
-		</ol>
-		<p><b>Installation Guide (WonderWitch .fx program):</b></p>
-		<p>(This method is experimental. If you run into problems, please use the &quot;OS Upgrade&quot; method.)</li>
-		<ol>
-			<li>Transfer <b>bootfriend-inst.fx</b> to WonderWitch.</li>
-			<li>Follow instruction steps 2-4 from the &quot;Cartridge&quot; installation guide.
-			<ul>
-				<li><b>Using the WonderWitch method, the original IEEPROM contents are not saved to SRAM!</b> Please use the XMODEM backup method instead.</li>
-				<li>Using the WonderWitch method, it is not always possible to &quot;unbrick&quot; a WonderSwan with damaged IEEPROM contents. This is a limitation of the method and cannot be fixed. (Note that the &quot;SwanCrystal TFT recovery&quot; function should work correctly.)</li>
-			</ul>
-			</li>
-		</ol>
-		<p><b>Installation Guide (WonderWitch OS Upgrade):</b></p>
-		<ol>
-			<li>The WonderWitch installer is currently only provided as an &quot;OS Upgrade&quot;. Therefore, the installation process is a little different from a typical WonderWitch program:
-			<ul>
-				<li>Start WonderWitch in <b>Freya Monitor</b> mode - hold B while the console is turning on.</li>
-				<li>Configure the serial baud rate in the Setup menu.</li>
-				<li>Select <b>Send System</b> and download a backup of the currently installed OS.
-				<ul>
-					<li>For downloading and uploading the OS, one can use an XMODEM transfer tool (as described in &quot;Usage&quot;), or TransMagic's built-in FreyaOS update functionality.</li>
-					<li>If you forget to do this, you can find a copy of FreyaOS 1.2.0 on <a href="http://wonderwitch.qute.co.jp/index_wwp.html">Qute's website</a> (=> ダウンロード).</li>
-				</ul>
-				</li>
-				<li>Select <b>Recv System</b> and upload the <b>bootfriend-inst-wwsystem.bin</b> file.</li>
-			</ul>
-			</li>
-			<li>Follow instruction steps 2-4 from the &quot;Cartridge&quot; installation guide.
-			<ul>
-				<li><b>Using the WonderWitch method, the original IEEPROM contents are not saved to SRAM!</b> Please use the XMODEM backup method instead.</li>
-				<li>Using the WonderWitch method, it is not always possible to &quot;unbrick&quot; a WonderSwan with damaged IEEPROM contents. This is a limitation of the method and cannot be fixed. (Note that the &quot;SwanCrystal TFT recovery&quot; function should work correctly.)</li>
-			</ul>
-			</li>
-			<li>Launch <b>Freya Monitor</b> again, and use <b>Recv System</b> with a copy of FreyaOS to restore the original operating system.</li>
-		</ol>
+		<button onclick="bf_download('bootfriend.bin', bf_generate_image('eeprom')); return false;"
+				class="pure-button" style="width: 550px;">Download bootfriend.bin (EEPROM dump for hardware recovery)</button>
 	</div>
 	<div class="pure-u-1-1">
 		<h2>Changelog</h2>
+		<p><b>BootFriend v03 (installer v07) (2025-03-24)</b></p>
+		<ul>
+			<li>[Installer] Minor bug fixes.</li>
+			<li>[Web] Added support for the white name color.</li>
+		</ul>
+		<p><b>BootFriend v03 (installer v06) (2024-12-26)</b></p>
+		<ul>
+			<li>[BootFriend] Minor bugfixes and size optimizations.</li>
+			<li>[Installer] Updated toolchain.</li>
+		</ul>
+		<p><b>BootFriend v02 (installer v05) (2024-07-31)</b></p>
+		<ul>
+			<li>[Installer] Updated toolchain.</li>
+		</ul>
 		<p><b>BootFriend v02 (installer v04) (2023-02-21)</b></p>
 		<ul>
 			<li>[BootFriend] Fix name color display regression.</li>
@@ -338,54 +213,6 @@
 		</ul>
 	</div>
 	<div class="pure-u-1-1">
-		<h2>Usage</h2>
-		<ul>
-			<li>To run a .bfb program (see the &quot;Additional software&quot; section below), perform the following steps:
-			<ol>
-				<li>Initiate an XMODEM file transfer on the PC side. This has to be done first.</li>
-				<li>Turn on the BootFriend-enabled WonderSwan console.</li>
-				<li>If done correctly, the PC should notify that a transfer has started, while the WonderSwan's screen should populate with dots.
-				<ul>
-					<li>Each dot corresponds to one block - 128 bytes - of data.</li>
-					<li>Letters in this process correspond to errors, some of which are recoverable and will result in an automatic attempt to retry transfer:
-					<ul>
-						<li><b>A</b>, <b>B</b>, <b>K</b> - corrupt information in transferred block,</li>
-						<li><b>C</b> - transfer cancelled by sending side,</li>
-						<li><b>D</b> - received file has invalid format,</li>
-						<li><b>R</b> - the received file's requested RAM area is out of permitted range.</li>
-					</ul>
-					</li>
-				</ul>
-				</li>
-			</ol>
-			</li>
-		</ul>
-	</div>
-	<div class="pure-u-1-1">
-		<h2>Additional software ♪</h2>
-		<h3 id="soft-ws-backup-tool">WS Backup Tool</h3>
-		<p>This utility allows you to use XMODEM transfers via the EXT port to:</p>
-		<ul>
-			<li>Dump the WonderSwan IPL (boot ROM),</li>
-			<li>Backup game data and save files,</li>
-			<li>Restore game save files,</li>
-			<li>Erase game save files,</li>
-			<li>Reflash WonderWitch and other reflashable cartridges (experimental!).</li>
-		</ul>
-		<p></p>
-		<ul>
-			<li><a href="ws-backup-tool-v0.1.7.bfb">Download .bfb (v0.1.7, 2023-06-05)</a></li>
-			<li><a href="ws-backup-tool-v0.1.5.bfb">Download .bfb (v0.1.5, 2023-04-09)</a></li>
-			<li><a href="https://github.com/asiekierka/ws-backup-tool">Source code</a></li>
-		</ul>
-		<h3 id="soft-wsmonitor">WSMonitor</h3>
-		<p>Created by <a href="https://twitter.com/trap0xf">trap15</a>, this utility acts as a rudimentary hardware state monitor for the WonderSwan, allowing examining the state of memory and I/O ports. Notably, using BootFriend, one can run WSMonitor <i>before</i> IPL/boot ROM lockout.</p>
-		<ul>
-			<li><a href="wsmonitor.bfb">Download .bfb</a></li>
-			<li><a href="https://bitbucket.org/trap15/wsmonitor">Source code</a></li>
-		</ul>
-	</div>
-	<div class="pure-u-1-1">
 		<h2>Credits ♥</h2>
 		<p>BootFriend is a project by myself, that is <a href="https://asie.pl/">asie</a>.</p>
 		<p>Special thanks to:
@@ -399,7 +226,7 @@
 	</div>
 </div>
 
-<script type="text/javascript" src="index.js?1676623191"></script>
-<script type="text/javascript" src="resources.js?1676623191"></script>
+<script type="text/javascript" src="index.js?1676623199"></script>
+<script type="text/javascript" src="resources.js?1676623199"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 // BootFriend for WS - Web configuration utility
-// Copyright (c) 2023 Adrian "asie" Siekierka
+// Copyright (c) 2023, 2024 Adrian "asie" Siekierka
 
 function bf_reverse_bits(x) {
     x = ((x >> 1) & 0x55) | ((x & 0x55) << 1);
@@ -333,7 +333,7 @@ const bf_font = document.getElementById("bf-font-default");
 var bf_eeprom_type = 0;
 var bf_custom_eeprom = null;
 var bf_image = null;
-var bf_colors = ["#000","#f00","#f70","#ff0","#7f0","#0f0","#0f7","#0ff","#07f","#00f","#70f","#f0f","#f07"];
+var bf_colors = ["#000","#f00","#f70","#ff0","#7f0","#0f0","#0f7","#0ff","#07f","#00f","#70f","#f0f","#f07", "#fff"];
 var bf_color = 0;
 var bf_screen_mode = 0;
 
@@ -579,8 +579,8 @@ function bf_pad_zeros(s, len) {
 }
 
 function bf_generate_bootsplash() {
-	var splashData = new Uint8Array(1920);
-	splashData.set(bin_bootfriend_template);
+    var splashData = new Uint8Array(1920);
+    splashData.set(bin_bootfriend_template);
     var idx = bin_bootfriend_template.length;
 
     var endTimeSeconds = parseFloat(document.getElementById("input_duration").value);
@@ -678,6 +678,46 @@ function bf_generate_splashdata() {
     }
 }
 
+function bf_generate_eeprom() {
+    var eeprom = new Uint8Array(2048);
+    var splashdata = bf_generate_splashdata();
+    if (splashdata == null) return null;
+
+    eeprom.set(splashdata, 128);
+
+    // "BOOTFRIEND"
+    eeprom[0x60] = 0x0C;
+    eeprom[0x61] = 0x19;
+    eeprom[0x62] = 0x19;
+    eeprom[0x63] = 0x1E;
+    eeprom[0x64] = 0x10;
+    eeprom[0x65] = 0x1C;
+    eeprom[0x66] = 0x13;
+    eeprom[0x67] = 0x0F;
+    eeprom[0x68] = 0x18;
+    eeprom[0x69] = 0x0E;
+    eeprom[0x6A] = 0x00;
+    eeprom[0x6B] = 0x25;
+
+    // Color console configuration
+    eeprom[0x80] = 0;
+    eeprom[0x81] = 0;
+    eeprom[0x82] = 0;
+    eeprom[0x83] = 0x83;
+
+    // SwanCrystal factory TFT data at 0xAE
+    eeprom[0xAE] = 0xD0;
+    eeprom[0xAF] = 0x77;
+    eeprom[0xB0] = 0xF7;
+    eeprom[0xB1] = 0x06;
+    eeprom[0xB2] = 0xE2;
+    eeprom[0xB3] = 0x0A;
+    eeprom[0xB4] = 0xEA;
+    eeprom[0xB5] = 0xEE;
+
+    return eeprom;
+}
+
 function bf_generate_rom(bin, bin_size) {
     if (bin_size < 0) bin_size = bin.length;
 
@@ -685,7 +725,7 @@ function bf_generate_rom(bin, bin_size) {
 	var title_index = bf_typedArray_indexOf(bin, "bootfriend-inst devel. bui");
 
     var splashdata = bf_generate_splashdata();
-    if (splashdata == null) return;
+    if (splashdata == null) return null;
 
 	var rom = new Uint8Array(bin_size);
 	rom.set(bin);
@@ -723,6 +763,8 @@ function bf_generate_image(type) {
 		return bf_wwcode(bf_generate_rom(bin_bootfriend_inst_rom, 131072).subarray(0, 64168), false);
 	} else if (type == "raw") {
 		return bf_generate_splashdata();
+	} else if (type == "eeprom") {
+		return bf_generate_eeprom();
 	}
 }
 
