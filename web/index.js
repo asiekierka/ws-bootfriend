@@ -235,8 +235,8 @@ function bfimg_to_tilemap(imageData, backgroundColor) {
                             tileMapIndex = tileDataMap[vhtile.join(",")];
                         } else {
                             tileData.push(...tile);
-                            tileDataMap[tile.join(",")] = tileIndex + boot_tile_offset;
                             tileMapIndex = tileIndex + boot_tile_offset;
+                            tileDataMap[tile.join(",")] = tileMapIndex;
                             tileIndex += 1;
                         }
                     }
@@ -291,7 +291,6 @@ function bfimg_tilemap_to_imagedata(tm) {
         for (var ix = 0; ix < imageData.width; ix += 8, tmi += 2) {
             var tm_entry = tm.map[tmi] | (tm.map[tmi + 1] << 8);
             var tm_tileidx = (tm_entry & 0x1FF);
-            if (tm_tileidx == 0) continue;
             tm_tileidx -= boot_tile_offset;
 
             var tm_tileofs = tm_tileidx*(4 << bpp);
@@ -300,8 +299,14 @@ function bfimg_tilemap_to_imagedata(tm) {
             var tm_hflip = (tm_entry >> 14) & 0x01;
             var tm_vflip = (tm_entry >> 15) & 0x01;
             var tm_tile = [];
-            for (var i = 0; i < 8*bpp; i++) {
-                tm_tile.push(tm.tiles[tm_tileofs + i]);
+            if (tm_tileofs < 0) {
+                for (var i = 0; i < 8*bpp; i++) {
+                    tm_tile.push(0);
+                }
+            } else {
+                for (var i = 0; i < 8*bpp; i++) {
+                    tm_tile.push(tm.tiles[tm_tileofs + i]);
+                }
             }
             if(tm_hflip) tm_tile = bfimg_hflip_tile(tm_tile);
             if(tm_vflip) tm_tile = bfimg_vflip_tile(tm_tile);
