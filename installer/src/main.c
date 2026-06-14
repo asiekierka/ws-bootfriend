@@ -89,7 +89,7 @@ static void statusbar_update(void) {
 	ui_puts(0, 1, COLOR_BLACK, eeprom_status);
 
 	// detect BootFriend
-	bool splash_active = boot_header_data.options1 & IEEP_C_OPTIONS1_CUSTOM_SPLASH;
+	bool splash_active = boot_header_data.options1 & WS_IEEP_COLOR_SETTINGS_CUSTOM_SPLASH;
 	bool splash_bf = boot_header_data.pad5 == 'b' && boot_header_data.pad6 == 'F';
 	bool splash_valid = boot_header_splash_valid;
 	if (!splash_valid && !splash_active) {
@@ -110,7 +110,7 @@ static void statusbar_update(void) {
 
 static void toggle_boot_splash(void) {
 	uint16_t word_0x82 = ws_eeprom_read_word(ws_eeprom_handle_internal(), 0x82);
-	word_0x82 ^= (IEEP_C_OPTIONS1_CUSTOM_SPLASH << 8);
+	word_0x82 ^= (WS_IEEP_COLOR_SETTINGS_CUSTOM_SPLASH << 8);
 	ws_eeprom_write_word(ws_eeprom_handle_internal(), 0x82, word_0x82);
 
 	boot_header_mark_changed();
@@ -195,8 +195,8 @@ static void install_bootfriend(const uint8_t __far* data, uint16_t data_size) {
 
 	// Disable the custom splash, if enabled.
 	uint16_t word_0x82 = ws_eeprom_read_word(ieep_handle, 0x82);
-	if (word_0x82 & (IEEP_C_OPTIONS1_CUSTOM_SPLASH << 8)) {
-		word_0x82 ^= (IEEP_C_OPTIONS1_CUSTOM_SPLASH << 8);
+	if (word_0x82 & (WS_IEEP_COLOR_SETTINGS_CUSTOM_SPLASH << 8)) {
+		word_0x82 ^= (WS_IEEP_COLOR_SETTINGS_CUSTOM_SPLASH << 8);
 		ws_eeprom_write_word(ieep_handle, 0x82, word_0x82);
 	}
 
@@ -257,7 +257,7 @@ static void install_bootfriend(const uint8_t __far* data, uint16_t data_size) {
 	}
 
 	// Enable the custom splash.
-	word_0x82 |= (IEEP_C_OPTIONS1_CUSTOM_SPLASH << 8);
+	word_0x82 |= (WS_IEEP_COLOR_SETTINGS_CUSTOM_SPLASH << 8);
 	ws_eeprom_write_word(ieep_handle, 0x82, word_0x82);
 	
 
@@ -327,7 +327,7 @@ static const char IN_ROM msg_restore_sram_backup[] = "Restore IEEPROM (SRAM)";
 
 uint8_t menu_show_main(void) {
 	boot_header_refresh();
-	bool splash_active = boot_header_data.options1 & IEEP_C_OPTIONS1_CUSTOM_SPLASH;
+	bool splash_active = boot_header_data.options1 & WS_IEEP_COLOR_SETTINGS_CUSTOM_SPLASH;
 	bool splash_bf = boot_header_data.pad5 == 'b' && boot_header_data.pad6 == 'F';
 
 	ws_boot_splash_header_t __far* provided_header = (ws_boot_splash_header_t __far*) _bootfriend_bin;

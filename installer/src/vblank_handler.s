@@ -32,7 +32,7 @@ vblank_int_handler:
 	pop ds
 
 	inc word ptr [vbl_ticks]
-	ASM_PLATFORM_CALL vblank_input_update
+	IA16_CALL vblank_input_update
 
 	// Acknowledge interrupt
 	mov al, 0x40
