@@ -28,9 +28,9 @@
 #include <wonderful.h>
 #ifdef __WONDERFUL_WWITCH__
 #include <sys/bios.h>
-#else
-#include <ws.h>
+// #define USE_WW_COMM
 #endif
+#include <ws.h>
 #include "xmodem.h"
 
 #define SOH 1
@@ -47,7 +47,7 @@ bool xmodem_poll_exit(void) {
 }
 
 void xmodem_open(uint8_t baudrate) {
-#ifdef __WONDERFUL_WWITCH__
+#ifdef USE_WW_COMM
 	comm_set_baudrate(baudrate ? COMM_SPEED_38400 : COMM_SPEED_9600);
 	comm_open();
 #else
@@ -57,7 +57,7 @@ void xmodem_open(uint8_t baudrate) {
 }
 
 void xmodem_close(void) {
-#ifdef __WONDERFUL_WWITCH__
+#ifdef USE_WW_COMM
 	comm_close();
 #else
         while (!ws_serial_is_writable()) { }
@@ -65,7 +65,7 @@ void xmodem_close(void) {
 #endif
 }
 
-#ifdef __WONDERFUL_WWITCH__
+#ifdef USE_WW_COMM
 #define ws_serial_getc comm_receive_char
 #define ws_serial_putc comm_send_char
 #endif
@@ -85,7 +85,7 @@ static uint8_t xmodem_read_block(uint8_t __far* block) {
 	for (uint16_t i = 0; i < XMODEM_BLOCK_SIZE; i++) {
 		uint8_t v = ws_serial_getc();
 		checksum += v;
-		if (block != NULL) { 
+		if (block != NULL) {
 			block[i] = v;
 		}
 	}
@@ -95,16 +95,24 @@ static uint8_t xmodem_read_block(uint8_t __far* block) {
 }
 
 static void xmodem_write_block(const uint8_t __far* block) {
+	uint8_t checksum = 0;
+	for (uint16_t i = 0; i < XMODEM_BLOCK_SIZE; i++) {
+		uint8_t v = block[i];
+		checksum += v;
+	}
+
 	ws_serial_putc(SOH);
 	ws_serial_putc(xmodem_idx);
 	ws_serial_putc(xmodem_idx ^ 0xFF);
 
-	uint8_t checksum = 0;
+#ifdef USE_WW_COMM
+	comm_send_block(block, XMODEM_BLOCK_SIZE);
+#else
 	for (uint16_t i = 0; i < XMODEM_BLOCK_SIZE; i++) {
 		uint8_t v = block[i];
 		ws_serial_putc(v);
-		checksum += v;
 	}
+#endif
 
 	ws_serial_putc(checksum);
 }
@@ -165,13 +173,13 @@ uint8_t xmodem_send_start(void) {
 #endif
 
 	while (!xmodem_poll_exit()) {
-#ifdef __WONDERFUL_WWITCH__
+#ifdef USE_WW_COMM
 		int16_t r = comm_receive_char();
 #else
 		int16_t r = ws_serial_getc_nonblock();
 #endif
 		if (r >= 0) {
-#ifndef __WONDERFUL_WWITCH__
+#ifndef USE_WW_COMM
 		        ws_hwint_disable(HWINT_SERIAL_RX);
 #endif
 			if (r == CAN) {

@@ -81,7 +81,7 @@ ASFLAGS		+= -x assembler-with-cpp $(DEFINES) $(WF_ARCH_CFLAGS) \
 		   $(INCLUDEFLAGS) -fno-function-sections -fdata-sections
 
 CFLAGS		+= -std=gnu11 $(WARNFLAGS) $(DEFINES) $(WF_ARCH_CFLAGS) \
-		   $(INCLUDEFLAGS) -fno-function-sections -fdata-sections -Os
+		   $(INCLUDEFLAGS) -fno-function-sections -fdata-sections -O2
 
 LDFLAGS		:= -T$(WF_LDSCRIPT) \
 		   $(LIBDIRSFLAGS) -Wl,-Map,$(MAP) -Wl,--gc-sections \
